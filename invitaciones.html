@@ -54,13 +54,13 @@
             <div>
                 <label class="block text-xs font-romana text-[#DAA520] uppercase tracking-widest mb-3">1. Elige una Plantilla</label>
                 <div class="flex gap-2 mb-4">
-                    <button onclick="setTemplate(FONDOS.fondo1)" class="flex-1 aspect-[9/16] bg-black rounded-sm border border-[#B89947]/50 hover:border-[#DAA520] focus:border-[#DAA520] bg-cover bg-center overflow-hidden flex items-end justify-center pb-2 transition-colors" style="background-image: url('https://i.imgur.com/uDJ3xLD.png');" title="Fondo Oficial">
+                    <button onclick="setTemplate(FONDOS.fondo1)" class="flex-1 aspect-[9/16] bg-black rounded-sm border border-[#B89947]/50 hover:border-[#DAA520] focus:border-[#DAA520] bg-[length:100%_100%] bg-center overflow-hidden flex items-end justify-center pb-2 transition-colors" style="background-image: url('https://i.imgur.com/uDJ3xLD.png');" title="Fondo Oficial">
                         <span class="text-[10px] text-[#E6D5B8] bg-black/80 px-2 py-1 rounded font-romana uppercase">Oficial</span>
                     </button>
-                    <button onclick="setTemplate(FONDOS.fondo2)" class="flex-1 aspect-[9/16] bg-black rounded-sm border border-[#B89947]/50 hover:border-[#DAA520] focus:border-[#DAA520] bg-cover bg-center overflow-hidden flex items-end justify-center pb-2 transition-colors" style="background-image: url('https://placehold.co/1080x1920/261f1a/E6D5B8?text=Diseño+2');" title="Opción 2">
+                    <button onclick="setTemplate(FONDOS.fondo2)" class="flex-1 aspect-[9/16] bg-black rounded-sm border border-[#B89947]/50 hover:border-[#DAA520] focus:border-[#DAA520] bg-[length:100%_100%] bg-center overflow-hidden flex items-end justify-center pb-2 transition-colors" style="background-image: url('https://placehold.co/1080x1920/261f1a/E6D5B8?text=Diseño+2');" title="Opción 2">
                         <span class="text-[10px] text-[#E6D5B8] bg-black/80 px-2 py-1 rounded font-romana uppercase">Opción 2</span>
                     </button>
-                    <button onclick="setTemplate(FONDOS.fondo3)" class="flex-1 aspect-[9/16] bg-black rounded-sm border border-[#B89947]/50 hover:border-[#DAA520] focus:border-[#DAA520] bg-cover bg-center overflow-hidden flex items-end justify-center pb-2 transition-colors" style="background-image: url('https://placehold.co/1080x1920/0a0807/8C92AC?text=Diseño+3');" title="Opción 3">
+                    <button onclick="setTemplate(FONDOS.fondo3)" class="flex-1 aspect-[9/16] bg-black rounded-sm border border-[#B89947]/50 hover:border-[#DAA520] focus:border-[#DAA520] bg-[length:100%_100%] bg-center overflow-hidden flex items-end justify-center pb-2 transition-colors" style="background-image: url('https://placehold.co/1080x1920/0a0807/8C92AC?text=Diseño+3');" title="Opción 3">
                         <span class="text-[10px] text-[#E6D5B8] bg-black/80 px-2 py-1 rounded font-romana uppercase">Opción 3</span>
                     </button>
                 </div>
@@ -134,8 +134,8 @@
             <p class="text-[#DAA520] font-romana text-xs tracking-[0.2em] uppercase">Vista Previa - Formato Historia</p>
         </div>
         
-        <div id="preview-wrapper" class="relative origin-top transition-transform duration-200 shadow-[0_20px_50px_rgba(0,0,0,0.9)] border border-[#B89947]/20 mt-12" style="width: 500px; height: 888px;">
-            <div id="invitation-preview" class="absolute top-0 left-0 overflow-hidden bg-center bg-cover bg-no-repeat bg-[#1a1512]" style="width: 1080px; height: 1920px; background-image: url('https://i.imgur.com/uDJ3xLD.png'); transform-origin: top left;">
+        <div id="preview-wrapper" class="relative origin-top transition-transform duration-200 shadow-[0_20px_50px_rgba(0,0,0,0.9)] border border-[#B89947]/20 mt-12" style="width: 337px; height: 600px;">
+            <div id="invitation-preview" class="absolute top-0 left-0 overflow-hidden bg-center bg-[length:100%_100%] bg-no-repeat bg-[#1a1512]" style="width: 1080px; height: 1920px; background-image: url('https://i.imgur.com/uDJ3xLD.png'); transform-origin: top left;">
                 
                 <div id="name-container" class="absolute w-full px-[80px] text-center" style="top: 50.8%;">
                     <p id="display-name" class="font-romana font-bold break-words inline-block m-0" style="color: #000000; line-height: 1;">
@@ -193,10 +193,18 @@
             const preview = document.getElementById('invitation-preview');
             const rightPanel = wrapper.parentElement;
             if (!wrapper || !preview || !rightPanel) return;
-            const maxHeight = rightPanel.clientHeight - 120;
+            
+            // Ocupará como máximo el 70% del alto de la pantalla o un máximo de 600px en PC
+            let maxHeight = rightPanel.clientHeight * 0.70; 
+            if (maxHeight > 600) maxHeight = 600; 
+            
             const maxWidth = rightPanel.clientWidth - 40;
             let targetWidth = maxHeight * (1080 / 1920);
-            if (targetWidth > maxWidth) targetWidth = maxWidth;
+            
+            if (targetWidth > maxWidth) {
+                targetWidth = maxWidth;
+            }
+            
             const scale = targetWidth / 1080;
             preview.style.transform = `scale(${scale})`;
             wrapper.style.width = `${targetWidth}px`;
