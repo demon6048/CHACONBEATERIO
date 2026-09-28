@@ -28,9 +28,9 @@
             background-color: var(--fondo-rustico);
             color: var(--texto-pergamino);
             font-family: 'EB Garamond', serif;
-            /* AQUÍ ESTÁ RESTAURADO TU FONDO ORIGINAL */
+            /* CAPA 1: Degradado aclarado para que la imagen de fondo se note más. CAPA 2: La imagen */
             background-image: 
-                radial-gradient(circle at center, rgba(18, 14, 12, 0.75) 0%, rgba(18, 14, 12, 0.98) 100%),
+                radial-gradient(circle at center, rgba(18, 14, 12, 0.45) 0%, rgba(18, 14, 12, 0.85) 100%),
                 url('https://i.imgur.com/3Otp8gv.png');
             background-size: cover;
             background-position: center center;
@@ -40,7 +40,7 @@
             scroll-behavior: smooth;
         }
 
-        .font-romana { font-family: 'Marcellus', serif; }
+        /* Tipografías Especiales */
         .font-script { font-family: 'Tangerine', cursive; }
         .font-adornada { font-family: 'Cinzel Decorative', display; }
         .font-lectura { font-family: 'EB Garamond', serif; }
@@ -101,7 +101,7 @@
             font-weight: bold;
         }
         .btn-oro:hover { filter: brightness(1.2); transform: translateY(-2px); }
-        
+
         .input-colonial {
             background-color: rgba(0,0,0,0.5);
             border: 1px solid var(--plata-envejecida);
@@ -111,26 +111,73 @@
         }
         .input-colonial:focus { border-color: var(--oro-colonial); outline: none; }
 
+        /* Animación Preloader */
         #preloader {
             position: fixed; inset: 0; z-index: 9999;
             background-color: var(--fondo-rustico);
             display: flex; justify-content: center; align-items: center;
             transition: opacity 1s ease-out, visibility 1s;
         }
-        .campana-animada { transform-origin: top center; animation: pendulo 2s ease-in-out infinite alternate; }
-        @keyframes pendulo { 0% { transform: rotate(-15deg); } 100% { transform: rotate(15deg); } }
+        .campana-animada {
+            transform-origin: top center;
+            animation: pendulo 2s ease-in-out infinite alternate;
+        }
+        @keyframes pendulo {
+            0% { transform: rotate(-15deg); }
+            100% { transform: rotate(15deg); }
+        }
 
-        .progress-bar-bg { width: 100%; height: 8px; background-color: rgba(0,0,0,0.8); border-radius: 4px; border: 1px solid rgba(140, 146, 172, 0.3); }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--oro-oscuro) 0%, var(--oro-colonial) 100%); width: 0%; transition: width 1.5s ease-in-out; border-radius: 4px; }
+        /* Barras de progreso */
+        .progress-bar-bg {
+            width: 100%; height: 8px; background-color: rgba(0,0,0,0.8);
+            border-radius: 4px; border: 1px solid rgba(140, 146, 172, 0.3);
+        }
+        .progress-bar-fill {
+            height: 100%; background: linear-gradient(90deg, var(--oro-oscuro) 0%, var(--oro-colonial) 100%);
+            width: 0%; transition: width 1.5s ease-in-out; border-radius: 4px;
+        }
+
+        /* Tabla Admin */
         .admin-table { width: 100%; border-collapse: collapse; }
         .admin-table th, .admin-table td { padding: 15px; border-bottom: 1px solid rgba(218, 165, 32, 0.15); text-align: left; }
         .admin-table th { font-family: 'Marcellus', serif; color: var(--oro-colonial); font-size: 0.9rem; letter-spacing: 1px; }
 
-        #toast-msg { background-color: var(--rojo-terciopelo); border: 1px solid var(--oro-oscuro); }
+        /* Mensaje Emergente (Toast) Colonial */
+        #toast-msg {
+            background-color: var(--rojo-terciopelo);
+            border: 1px solid var(--oro-oscuro);
+        }
+
+        /* --- EFECTO DE DESTELLOS MÁGICOS (CHISPAS DORADAS) --- */
+        #particles-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none; /* Evita que las chispas estorben al hacer clic */
+            z-index: 0; /* Se ubica en el fondo absoluto */
+            overflow: hidden;
+        }
+        .chispa {
+            position: absolute;
+            background-color: #DAA520; /* Oro colonial */
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px rgba(218, 165, 32, 0.6); /* Resplandor */
+            opacity: 0;
+            animation: destello linear infinite;
+        }
+        @keyframes destello {
+            0% { opacity: 0; transform: translateY(0) scale(0.5); }
+            50% { opacity: 1; transform: translateY(-30px) scale(1.2); }
+            100% { opacity: 0; transform: translateY(-60px) scale(0.5); }
+        }
     </style>
 </head>
 <body class="antialiased">
 
+    <!-- CONTENEDOR DE DESTELLOS DE LUZ -->
+    <div id="particles-container"></div>
+
+    <!-- PRELOADER -->
     <div id="preloader">
         <div class="text-center flex flex-col items-center">
             <svg width="60" height="200" viewBox="0 0 60 200" xmlns="http://www.w3.org/2000/svg" class="campana-animada mb-4">
@@ -147,22 +194,26 @@
     <div id="mascara-izquierda" class="mascara-lateral mascara-izq"></div>
     <div id="mascara-derecha" class="mascara-lateral mascara-der"></div>
 
+    <!-- NAVBAR SIEMPRE VISIBLE -->
     <nav class="fixed w-full z-50 border-b border-oro-oscuro/30 bg-[#120e0c]/95 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <div class="flex items-center cursor-pointer py-2" onclick="navigateTo('home')">
-                    <img src="https://i.imgur.com/EaeCx8p.png" alt="Logo Chacón Beaterio" class="h-16 md:h-20 object-contain drop-shadow-[0_0_8px_rgba(218,165,32,0.4)] transition-transform duration-300 hover:scale-105">
+                <!-- IZQUIERDA: Logo -->
+                <div class="flex items-center cursor-pointer py-2 flex-shrink-0 z-50 mr-2 md:mr-0" onclick="navigateTo('home')">
+                    <img src="https://i.imgur.com/EaeCx8p.png" alt="Logo Chacón Beaterio" class="h-12 md:h-20 object-contain drop-shadow-[0_0_8px_rgba(218,165,32,0.4)] transition-transform duration-300 hover:scale-105">
                 </div>
-                <div class="hidden md:flex space-x-6 items-center">
-                    <button onclick="navigateTo('home')" class="font-romana text-sm text-texto-pergamino hover:text-oro-colonial transition uppercase tracking-wide">Inicio</button>
-                    <button onclick="showToast('Sección de Historia en desarrollo...')" class="font-romana text-sm text-texto-pergamino hover:text-oro-colonial transition uppercase tracking-wide">Historia</button>
-                    <button onclick="showToast('Catálogo de Integrantes en desarrollo...')" class="font-romana text-sm text-texto-pergamino hover:text-oro-colonial transition uppercase tracking-wide">Integrantes</button>
-                    <button onclick="scrollToSede()" class="font-romana text-sm text-texto-pergamino hover:text-oro-colonial transition uppercase tracking-wide">Sede</button>
-                    <a href="invitaciones.html" class="font-romana text-sm text-texto-pergamino hover:text-oro-colonial transition uppercase tracking-wide">Invitaciones</a>
-                    <button onclick="showToast('Mapa GPS en vivo se activará en Diciembre...')" class="font-romana text-sm text-red-500 hover:text-red-400 transition uppercase tracking-wide flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> En Vivo
+                
+                <!-- CENTRO/DERECHA: Enlaces (Siempre visibles, con scroll horizontal en celular) -->
+                <div class="flex flex-1 justify-start md:justify-center space-x-4 md:space-x-8 items-center overflow-x-auto scroll-invisible whitespace-nowrap px-2">
+                    <button onclick="navigateTo('home')" class="font-romana text-[11px] md:text-base text-texto-pergamino hover:text-oro-colonial transition uppercase tracking-wide">Inicio</button>
+                    <button onclick="showToast('Sección de Historia en desarrollo...')" class="font-romana text-[11px] md:text-base text-texto-pergamino hover:text-oro-colonial transition uppercase tracking-wide">Historia</button>
+                    <button onclick="showToast('Catálogo de Integrantes en desarrollo...')" class="font-romana text-[11px] md:text-base text-texto-pergamino hover:text-oro-colonial transition uppercase tracking-wide">Integrantes</button>
+                    <button onclick="scrollToSede()" class="font-romana text-[11px] md:text-base text-texto-pergamino hover:text-oro-colonial transition uppercase tracking-wide">Sede</button>
+                    <a href="invitaciones.html" class="font-romana text-[11px] md:text-base text-texto-pergamino hover:text-oro-colonial transition uppercase tracking-wide">Invitaciones</a>
+                    <button onclick="showToast('Mapa GPS en vivo se activará en Diciembre...')" class="font-romana text-[11px] md:text-base text-red-500 hover:text-red-400 transition uppercase tracking-wide flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-red-500 animate-pulse"></span> En Vivo
                     </button>
-                    <button onclick="navigateTo('portal')" id="btn-nav-portal" class="ml-4 border border-oro-oscuro text-oro-colonial px-5 py-2 hover:bg-oro-oscuro hover:text-black transition font-romana uppercase text-xs tracking-wider">
+                    <button onclick="navigateTo('portal')" id="btn-nav-portal" class="ml-2 border border-oro-oscuro text-oro-colonial px-3 py-1.5 md:px-4 md:py-2 hover:bg-oro-oscuro hover:text-black transition font-romana uppercase text-[9px] md:text-xs tracking-wider flex-shrink-0">
                         Portal Privado
                     </button>
                 </div>
@@ -295,12 +346,50 @@
             const toast = document.getElementById('toast-msg');
             toast.textContent = mensaje;
             toast.classList.remove('opacity-0', 'translate-y-10');
-            setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-10'); }, 3000);
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-10');
+            }, 3000);
         }
+
         window.addEventListener('load', () => {
             const preloader = document.getElementById('preloader');
-            setTimeout(() => { preloader.style.opacity = '0'; setTimeout(() => { preloader.style.display = 'none'; }, 1000); }, 2500);
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => { preloader.style.display = 'none'; }, 1000);
+            }, 2500);
+
+            // Iniciar la magia de las chispas doradas
+            crearChispas();
         });
+
+        // Función que genera los destellos de fondo
+        function crearChispas() {
+            const container = document.getElementById('particles-container');
+            const numChispas = 70; // Cantidad de destellos
+            
+            for (let i = 0; i < numChispas; i++) {
+                let chispa = document.createElement('div');
+                chispa.className = 'chispa';
+                
+                // Posición aleatoria en toda la pantalla
+                chispa.style.left = Math.random() * 100 + 'vw';
+                chispa.style.top = Math.random() * 100 + 'vh';
+                
+                // Tamaño aleatorio (entre 1px y 3px)
+                let size = Math.random() * 2 + 1;
+                chispa.style.width = size + 'px';
+                chispa.style.height = size + 'px';
+                
+                // Duración de animación aleatoria (entre 3s y 8s)
+                chispa.style.animationDuration = (Math.random() * 5 + 3) + 's';
+                // Retraso aleatorio para que no brillen todas al mismo tiempo
+                chispa.style.animationDelay = (Math.random() * 5) + 's';
+                
+                container.appendChild(chispa);
+            }
+        }
+
         function navigateTo(targetId) {
             window.scrollTo(0, 0);
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
